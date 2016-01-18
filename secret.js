@@ -1,0 +1,1 @@
+var config;config={apiKey:"AIzaSyAsOeIrUa3kSbvHnH0LpjmFfRwAIqRv6q8",oauthClientId:"1023821193205-56dpmkeqjob0abkskrv3hkmkchomorl1.apps.googleusercontent.com",oauthClientSecret:"ouPZLLCivRYaQl9hK3f7l_Pc",memberGroupId:"00b4903a9758a234e8fe33c6ca03cf283bfd270360d057e4da85d2cf96c8217f",projectId:"gphotos-1181"};
