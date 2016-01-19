@@ -1,8 +1,35 @@
 angular.module \main
-  ..controller \upload, 
+  ..filter \formatdate, -> -> 
+    if !it => return "N/A"
+    date = new Date it
+    pad = -> if "#it".length < 2 => "0#it" else "#it"
+    M = pad date.getMonth! + 1
+    d = pad date.getDate!
+    h = pad date.getHours!
+    m = pad date.getMinutes!
+    s = pad date.getSeconds!
+    "#M/#d #h:#m:#s"
+  ..controller \admin, 
   <[$scope $interval $timeout $firebaseArray $firebaseAuth backend]> ++ 
   ($scope, $interval, $timeout, $firebaseArray, $firebaseAuth, backend) ->
     $scope <<< backend{stream, user}
+    (authdata) <- backend.email \admin@tw-events.com, \admin .then
+    $scope.admin = authdata
+    $scope.vote = do
+      start: backend.config.start or null
+      getstart: -> 
+        if !@start => 
+          @start = new Date!getTime!
+          backend.config.start = @start
+          backend.config.$save!
+      dur: backend.config.dur or 120
+      update: ->
+        backend.config.dur = @dur
+        backend.config.$save!
+    $scope.backend = backend
+    $scope.$watch 'backend.config', ->
+      $scope.vote.start = backend.config.start or null
+      $scope.vote.dur = backend.config.dur or 120
     $scope.upload = do
       concurrent-count: 2
       progress: {}
@@ -21,10 +48,12 @@ angular.module \main
         ) .then _
         console.log "[UPLOADED] #{payload.name} (#{payload.size})"
         payload.progress = payload.size
+        pad = -> if "#it".length < 6 => ("0"*(6 - "#it".length)) + "#it" else "#it"
         for i from 0 til @current.length => if @current[i].name == payload.name => 
           $scope.stream.$add do
             name: @current[i].name
             url: "https://storage.googleapis.com/thumbnail-gphotos/#{@current[i].name}"
+            order: pad($scope.stream.length)
           @current.splice i,1
           $scope.upload.handle!
           break

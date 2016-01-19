@@ -24,41 +24,38 @@ html(lang="en")
     script(src="https://apis.google.com/js/client.js")
     script(type="text/javascript",src="/assets/bluebird/3.1.1/bluebird.min.js")
     script(type="text/javascript",src="index.js")
-    script(type="text/javascript",src="upload.js")
     script(type="text/javascript",src="/assets/bootstrap-material/0.5.7/js/material.min.js")
   body
     #root.container(ng-app="main",ng-controller="main")
-      #counter 15 #[i.fa.fa-heart]
+      #counter(ng-show="backend.inited") 已投 {{backend.info.like || {}|count}} 票
       #back-top(ng-click="backtop()") 回到頂端
-      #timer 距離投票結束還有 20 分 15 秒
+      #timer 
+        span(ng-if="!tick.end && tick.start") 距離投票結束還有 {{tick.hrs}} 小時 {{tick.min}} 分 {{tick.sec}} 秒
+        span(ng-if="tick.end && tick.start") 投票已結束
+        span(ng-if="!tick.start") 投票尚未開始
       .g-signin2(data-onsuccess="onSignIn")
-      //-input#files(type="file",name="",multiple)
-      .file(ng-repeat="(key,item) in upload.progress",ng-attr-style="background-image:url({{item.img}})")
-        .progress(ng-class="{'dim':item.progress>=item.size}")
-          .progress-bar(ng-attr-style="width:{{(100 * (item.progress / item.size)) || 0}}%")
-        i.glyphicon.glyphicon-ok(ng-class="{'active':item.progress >= item.size}")
       #layout
-        .well.thumbnail(ng-repeat="photo in stream",ng-click="full.set(photo)",ng-attr-data-order="{{photo.order}}"): .ib
+        .well.thumbnail(ng-repeat="photo in backend.stream|orderBy:'-'",ng-click="full.set(photo)",
+        ng-attr-data-order="{{photo.order}}"): .ib
           a.img: img(ng-attr-src="{{photo.url}}",isotope)
-          .count.btn.btn-fab.btn-default(ng-class="{'active':photo.like.indexOf(user.uid)>=0}",ng-click="like(photo,$event)") 
-            span {{photo.like.length || 0}}
+          .count.btn.btn-fab.btn-default(ng-show="!tick.end && tick.start",
+          ng-class="{'active':photo.like[backend.user.uid].value}",ng-click="like(photo,$event)") 
+            span {{photo.like || {}|count}}
             i.fa.fa-heart
             i.fa.fa-check
       hr
-      #full(ng-attr-style="background-image:url({{full.photo.url}})",
+      #full(ng-attr-style="background-image:url({{full.photo.url|escape}})",
       ng-class="{'active':full.show}",ng-click="full.show=false")
-        .count.btn.btn-fab.btn-default(ng-class="{'active':full.photo.like.indexOf(user.uid)>=0}",ng-click="like(full.photo,$event);") 
-          span {{full.photo.like.length || 0}}
+        .count.btn.btn-fab.btn-default(ng-show="!tick.end && tick.start",
+        ng-class="{'active':full.photo.like[backend.user.uid].value}",ng-click="like(full.photo,$event);") 
+          span {{full.photo.like || {}|count}}
           i.fa.fa-heart
           i.fa.fa-check
-      #voter.hide
-        .well 你已經投了三張票囉！或者說，你想要改嗎？
-
-        .row
-          .col-xs-4
-            .well.thumbnail(style="width:100%;height: 200px")
-          .col-xs-4
-            .well.thumbnail(style="width:100%;height: 200px")
-          .col-xs-4
-            .well.thumbnail(style="width:100%;height: 200px")
-        .btn.btn-primary.btn-block 我改好了
+      #revote(ng-show="revote")
+        div(style="text-align:center;color:#fff;font-size:24px;font-weight:bold") 已達投票上限，下圖為目前的選擇，如想更換請點刪除
+        br.clearfix
+        .cell3(ng-repeat="k in backend.info.like|likecheck",ng-attr-style="left:{{2.5 + $index * 32.5 }}%")
+          img(ng-attr-src="{{k|decode}}")
+          .btn.btn-default(ng-click="remove(k)") 刪除
+        br.clearfix
+        .btn.btn-primary.btn-block(ng-click="revote=false") 我改好了

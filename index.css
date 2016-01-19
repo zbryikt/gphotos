@@ -4,6 +4,9 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  color: #404040;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 #root.container {
   width: 100%;
@@ -62,18 +65,18 @@ body {
 .container .thumbnail.well {
   margin: 10px;
   float: left;
-  width: 31%;
+  width: 30%;
   position: relative;
 }
 @media (max-width: 800px) {
   .container .thumbnail.well {
-    width: 40%;
+    width: 27%;
     padding: 2px;
   }
 }
 @media (max-width: 480px) {
   .container .thumbnail.well {
-    width: 92%;
+    width: 40%;
     padding: 2px;
   }
 }
@@ -96,17 +99,6 @@ body {
 .count.btn-fab.btn {
   position: absolute;
   width: 90px;
-/*
-  bottom: -5px
-  left: 50%
-  margin-left: -45px
-  font-size: 20px
-  box-shadow: 0 10px 10px rgba(0,0,0,0.3)
-  font-weight: bold
-  background: #fff
-  color: #444
-  border-radius: 10px
-  */
   bottom: 10px;
   left: 10px;
   margin: 0;
@@ -125,20 +117,6 @@ body {
   line-height: 30px;
   text-align: center;
   overflow: visible;
-/*i.fa.fa-heart
-    opacity: 0
-    position: absolute
-    top: -3px
-    right: 10px
-    font-size: 12px
-    color: #f00
-    text-shadow: 0 2px 1px rgba(0,0,0,0.2)
-  &.active
-    background: #44f
-    color: #fff
-    i.fa.fa-heart
-      opacity: 1
-  */
 }
 .count.btn-fab.btn i.fa.fa-heart,
 .count.btn-fab.btn i.fa.fa-check {
@@ -198,7 +176,7 @@ body {
 #upload-input {
   display: block;
   width: 100%;
-  height: 100px;
+  height: 112px;
   position: relative;
   cursor: pointer;
 }
@@ -245,6 +223,7 @@ body {
 #counter {
   top: 10px;
   right: 100px;
+  width: 160px;
 }
 #back-top {
   top: 10px;
@@ -264,7 +243,7 @@ body {
   color: #fff;
   text-align: center;
 }
-#voter {
+#revote {
   position: fixed;
   top: 0;
   left: 0;
@@ -273,4 +252,62 @@ body {
   z-index: 20;
   padding: 20px;
   background: rgba(0,0,0,0.8);
+}
+.prj-row {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.prj-row .prj-cell {
+  position: absolute;
+  width: 20%;
+}
+.prj-row img {
+  width: 98%;
+  margin: 2%;
+}
+.prj-row .count.btn.btn-fab {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  margin-left: -45px;
+}
+.cell3 {
+  width: 30%;
+  text-align: center;
+  position: absolute;
+  top: 15%;
+  height: 70%;
+  left: 0;
+}
+@media (max-width: 800px) {
+  .cell3 {
+    height: auto;
+    top: 25%;
+  }
+}
+.cell3 img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.cell3 .btn {
+  background: #fff;
+  color: #404040;
+  margin-top: -20px;
+}
+@media (max-width: 800px) {
+  #revote .btn.btn-default {
+    width: 80%;
+    margin-left: -40%;
+  }
+}
+#revote .btn {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  margin-left: -100px;
+  width: 200px;
+  background: #fff;
+  color: #404040;
 }
