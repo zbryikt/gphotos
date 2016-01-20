@@ -273,6 +273,7 @@ update-file = ->
         console.log e.message
       return
   if type == \styl =>
+    src = "index.styl"
     if /(basic|vars)\.styl/.exec it => return
     try
       styl-tree.parse src
@@ -285,6 +286,7 @@ update-file = ->
     for src in srcs
       try
         des = src.replace(/src\/styl/, "static/css").replace(/\.styl$/, ".css")
+        des = "index.css"
         stylus fs.read-file-sync(src)toString!
           .set \filename, src
           .define 'index', (a,b) ->

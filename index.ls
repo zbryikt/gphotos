@@ -87,6 +87,7 @@ angular.module \main, <[firebase]>
 
     $scope.like = (entry, e) -> 
       if !backend.user => return 
+      if $scope.tick.end or !$scope.tick.start => return
       userinfo = $scope.backend.info #$scope.backend.{}info{}[backend.user.uid]
       userlikes = [k for k of userinfo.{}like].filter(->userinfo.{}like[it].value).length
       targetlike = entry.{}like{}[backend.user.uid].value
@@ -105,18 +106,21 @@ angular.module \main, <[firebase]>
         e.stop-propagation!
         return false
 
-    $scope.backtop = -> document.body.scrollTop = 0
+    $scope.backtop = ->
+      $(document.body).animate({scrollTop: 0}, '500', 'swing', ->)
     $scope.isotope = do
       obj: null
       init: ->
         if $scope.isotope.ctrl => $scope.isotope.ctrl.destroy!
         $scope.isotope.ctrl = new Isotope $(\#layout)0, do
-          itemSelector: \.thumbnail
+          itemSelector: \.x-card
           layoutMode: \masonry
           getSortData: weight: '[data-order]'
           sortBy: 'weight'
           sortAscending: false
-      update: -> $timeout (~> $scope.isotope.ctrl.arrange {filter: "*"}), 100
+      update: -> 
+        $timeout (~> $scope.isotope.ctrl.arrange {filter: "*"}), 100
+        $timeout (~> $scope.isotope.ctrl.arrange {filter: "*"}), 1000
 
     $scope.$watch 'backend.stream', (->
       if $scope.last-length != $scope.backend.stream.length =>
@@ -148,6 +152,7 @@ angular.module \main, <[firebase]>
       if !photo => return
       $scope.like(photo)
     $interval (-> $scope.tick.count!), 1000
+    $scope.inited = true
 
 window.onSignIn = (user) ->
   profile = user.getBasicProfile!

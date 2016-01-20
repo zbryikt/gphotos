@@ -1,6 +1,5 @@
-@import vars
-@import basic
-@import google
+@import 'styl/vars'
+@import 'styl/basic'
 
 html,body
   width: 100%
@@ -11,80 +10,39 @@ html,body
   font-family: Roboto,Helvetica,Arial,sans-serif 
   -webkit-font-smoothing: antialiased
 
-#root.container
+#root
   width: 100%
   padding: 0
 
-.file
-  display: inline-block
-  width: 200px
-  height: 120px
-  border: 1px solid #ddd
-  box-shadow: 0 2px 3px rgba(0,0,0,0.1)
-  background-size: cover
-  margin: 10px
-  border-radius: 2px
-  position: relative
-  .progress
-    position: absolute
-    bottom: 5px
-    left: 5%
-    height: 10px
-    width: 90%
-    margin: 0
-    transition(opacity 1s ease-in-out)
-    transition-delay(2s)
-    &.dim
-      opacity: 0.2
-  i.glyphicon-ok
-    position: absolute
-    top: 4px
-    right: 4px
-    color: #4d4
-    display: block
-    background: #fff
-    width: 24px
-    height: 24px
-    border-radius: 50%
-    border: 2px solid #4d4
-    text-align: center
-    line-height: 20px
-    opacity: 0
-    transition(opacity 1s ease-in-out)
-    transition-delay(2s)
-    &.active
-      opacity: 1
-
-.container .thumbnail.well
-  margin: 10px
-  float: left
-  width: 30%
-  @media (max-width: 800px)
-    width: 27%
-    padding: 2px
-  @media (max-width: 480px)
-    width: 40%
-    padding: 2px
-  position: relative
-  a.img
-    display: block
-    min-height: 100px
-  .ib
-    width: 100%
-    padding: 5px
-  img
-    width: 100%
-    border-radius: 3px
-
 #layout
-  width: 100%
-  padding: 10px
+  width: 95%
+  margin: 10px 2.5%
 
-.count.btn-fab.btn
-  position: absolute
+#init
+  transition(all 0.3s ease-in-out)
+  opacity: 1
+#init.dim
+  z-index: 0
+  opacity: 0
+
+
+//-#counter, #back-top
+//-  position: fixed
+//-  width: 80px
+//-  height: 30px
+//-  z-index: 12
+//-  padding: 5px
+//-  background: #fff
+//-  border-radius: 3px
+//-  border: 1px solid #ccc
+//-  text-align: center
+//-  cursor: pointer
+
+.count
+  //position: absolute
   width: 90px
   bottom: 10px
-  left: 10px
+  //left: 10px
   margin: 0
   border-radius: 5px
   opacity: 1!important
@@ -124,25 +82,6 @@ html,body
 .iso-show
   opacity: 1
 
-#full
-  position: fixed
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  z-index: 10
-  background-color: rgba(0,0,0,0.8)
-  background-position: center center
-  background-size: contain
-  background-repeat: no-repeat
-  display: none
-  &.active
-    display: block
-  .count.btn-fab.btn
-    margin-left: -45px
-    left: 50%
-    bottom: 20px
-
 #upload-input
   display: block
   width: 100%
@@ -175,50 +114,10 @@ html,body
     border-radius: 5px
     cursor: pointer
 
-#counter, #back-top
-  position: fixed
-  width: 80px
-  height: 30px
-  z-index: 12
-  padding: 5px
-  background: #fff
-  border-radius: 3px
-  border: 1px solid #ccc
-  text-align: center
-  cursor: pointer
-
 #counter
   top: 10px
   right: 100px
   width: 160px
-
-#back-top
-  top: 10px
-  right: 10px
-
-#timer
-  position: fixed
-  bottom: 0
-  left: 0
-  width: 100%
-  height: 40px
-  font-size: 20px
-  line-height: 30px
-  z-index: 12
-  padding: 5px
-  background: rgba(0,0,0,0.8)
-  color: #fff
-  text-align: center
-
-#revote
-  position: fixed
-  top: 0
-  left: 0
-  width: 100%
-  height: 100%
-  z-index: 20
-  padding: 20px
-  background: rgba(0,0,0,0.8)
 
 .prj-row
   width: 100%
@@ -236,33 +135,8 @@ html,body
     bottom: 10px
     left: 50%
     margin-left: -45px
-.cell3
-  width: 30%
-  text-align: center
-  position: absolute
-  top: 15%
-  height: 70%
-  @media (max-width: 800px)
-    height: auto
-    top: 25%
-  left: 0
-  img
-    max-width: 100%
-    max-height: 100%
-  .btn
-    background: #fff
-    color: #404040
-    margin-top: -20px
-@media (max-width: 800px)
-  #revote .btn.btn-default
-    width: 80%
-    margin-left: -40%
 
-#revote .btn
-  position: absolute
-  bottom: 10px
-  left: 50%
-  margin-left: -100px
-  width: 200px
-  background: #fff
-  color: #404040
+@import 'styl/admin'
+@import 'styl/menu'
+@import 'styl/card'
+@import 'styl/popup'

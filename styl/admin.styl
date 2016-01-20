@@ -1,0 +1,43 @@
+@import 'vars'
+@import 'basic'
+
+.file
+  display: inline-block
+  width: 200px
+  height: 120px
+  border: 1px solid #ddd
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1)
+  background-size: cover
+  margin: 10px
+  border-radius: 2px
+  position: relative
+  .progress
+    position: absolute
+    bottom: 5px
+    left: 5%
+    height: 10px
+    width: 90%
+    margin: 0
+    transition(opacity 1s ease-in-out)
+    transition-delay(2s)
+    &.dim
+      opacity: 0.2
+  i.glyphicon-ok
+    position: absolute
+    top: 4px
+    right: 4px
+    color: #4d4
+    display: block
+    background: #fff
+    width: 24px
+    height: 24px
+    border-radius: 50%
+    border: 2px solid #4d4
+    text-align: center
+    line-height: 20px
+    opacity: 0
+    transition(opacity 1s ease-in-out)
+    transition-delay(2s)
+    &.active
+      opacity: 1
+
