@@ -85,18 +85,19 @@ angular.module \main, <[firebase]>
       set: -> @ <<< {photo: it, show: true}
       show: false
 
-    $scope.like = (entry, e) -> 
+    $scope.like = (entry, e, force-dislike = false) -> 
       if !backend.user => return 
       if $scope.tick.end or !$scope.tick.start => return
       userinfo = $scope.backend.info #$scope.backend.{}info{}[backend.user.uid]
       userlikes = [k for k of userinfo.{}like].filter(->userinfo.{}like[it].value).length
       targetlike = entry.{}like{}[backend.user.uid].value
-      if userlikes < 3 or targetlike => 
+      if userlikes < 3 or targetlike or force-dislike => 
         entrylike = $firebaseObject(
           new Firebase("https://gphotos.firebaseio.com/stream/#{entry.$id}/like/#{backend.user.uid}")
         )
         <- entrylike.$loaded!then 
         entrylike.value = !!!(entry.{}like{}[backend.user.uid].value)
+        if force-dislike => entrylike.value = false
         entrylike.$save!
         userinfo.{}like[btoa(entry.url)] = {value: entrylike.value}
         userinfo.$save!
@@ -150,7 +151,7 @@ angular.module \main, <[firebase]>
     $scope.remove = (url) ->
       photo = $scope.backend.stream.filter(->it.url == atob(url)).0
       if !photo => return
-      $scope.like(photo)
+      $scope.like(photo, null, true)
     $interval (-> $scope.tick.count!), 1000
     $scope.inited = true
 
