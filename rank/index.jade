@@ -30,7 +30,7 @@ html(lang="en")
     #root.rank(ng-controller="rank")
       #menu-backtop(ng-click="backhome()") #[i.fa.fa-angle-left]
       include /jade/timer.jade
-      #ranklist
+      #ranklist(ng-show="!tick.end && tick.start")
         .x-card.rank(ng-repeat="photo in stream|orderBy:'-'",
         ng-attr-data-order="{{photo.order}}"): .ib
           div: img(ng-attr-src="{{photo.url}}",ng-click="full.set(photo)")
