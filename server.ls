@@ -306,6 +306,7 @@ update-file = ->
         console.log e.message
 
   if type == \jade => 
+    if /jade\//.exec(src) => return
     des = src.replace /\.jade$/, ".html"
     try 
       desdir = path.dirname(des)

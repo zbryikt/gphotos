@@ -15,6 +15,7 @@ angular.module \main, <[firebase]>
         scope.$on \$destroy ->
           scope.isotope.ctrl.remove e.0.parentNode.parentNode.parentNode
           scope.isotope.ctrl.layout!
+  ..filter \rank, -> (order) -> (<[1st 2nd 3rd 4th 5th]>[order] or order)
   ..filter \likecheck, -> (hash) -> 
     [k for k of hash].filter(->hash[it].value)
   ..filter \decode, -> -> atob(it)
@@ -61,18 +62,22 @@ angular.module \main, <[firebase]>
   ..controller \rank,
   <[$scope $interval $timeout backend]> ++
   ($scope, $interval, $timeout, backend) ->
+    $scope.backend = backend
     update = (->
       stream = backend.stream.map(
         (p)-> {like: p.like, url: p.url, count: [k for k of p.like].filter(->p.like[it].value).length}
       )
       stream.sort((a,b)-> b.count - a.count)
       $scope.stream = stream.splice 0,5
+      $scope.inited = true
     )
     $interval update, 2000
     $(window).on \resize, -> $scope.$apply ->
       img-height = $(".prj-row img").height!
       win-height = $(window).height!
       $scope.prjrowheight = ( win-height - img-height ) / 2
+    $scope.backhome = ->
+      window.location.href = "/"
 
   ..controller \main, 
   <[$scope $interval $timeout $firebaseArray $firebaseObject $firebaseAuth backend]> ++
@@ -112,6 +117,7 @@ angular.module \main, <[firebase]>
     $scope.isotope = do
       obj: null
       init: ->
+        if !$(\#layout)0 => return
         if $scope.isotope.ctrl => $scope.isotope.ctrl.destroy!
         $scope.isotope.ctrl = new Isotope $(\#layout)0, do
           itemSelector: \.x-card
@@ -119,7 +125,7 @@ angular.module \main, <[firebase]>
           getSortData: weight: '[data-order]'
           sortBy: 'weight'
           sortAscending: false
-      update: -> 
+      update: -> if $scope.isotope.ctrl =>
         $timeout (~> $scope.isotope.ctrl.arrange {filter: "*"}), 100
         $timeout (~> $scope.isotope.ctrl.arrange {filter: "*"}), 1000
 

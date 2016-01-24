@@ -1,0 +1,5 @@
+#menu-timer: .ib 
+  span(ng-if="!tick.end && tick.start") 距離投票結束還有 {{tick.hrs}} 小時 {{tick.min}} 分 {{tick.sec}} 秒
+  span(ng-if="tick.end && tick.start") 投票已結束
+  span(ng-if="!tick.start") 投票尚未開始
+

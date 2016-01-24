@@ -2,7 +2,7 @@ doctype html
 //- basic libraries: jquery(1.10.2), d3js(3.3.11), angularjs(1.2.3), bootstrap(3.0)/semantic-ui(0.9.3/0.9.5)
 //-                  fontawesome(4.4.0), reactjs(0.14.0)
 - var use = { cdn: false, og: false, favicon: true }
-- var lib = { jquery: false, d3js: false, angular: true, bootstrap: true, semantic: false, fontawesome: true, reactjs: true }
+- var lib = { jquery: false, d3js: false, angular: true, bootstrap: true, semantic: false, fontawesome: true, reactjs: false }
 - var assets = "/assets"
 - var thumbnail = "thumbnail.png"
 - var favicon = "thumbnail.png"
@@ -25,9 +25,18 @@ html(lang="en")
     script(type="text/javascript",src="/assets/bluebird/3.1.1/bluebird.min.js")
     script(type="text/javascript",src="/index.js")
     script(type="text/javascript",src="/assets/bootstrap-material/0.5.7/js/material.min.js")
-  body
-    #root.container(ng-app="main",ng-controller="rank")
-      .prj-row(ng-attr-style="top:{{prjrowheight}}px")
-        .prj-cell(ng-repeat="n in stream",ng-attr-style="left:{{$index * 20}}%"): .photo
-          img(ng-attr-src="{{n.url}}")
-          .count.btn.btn-fab {{n.count}}
+  body(ng-app="main",ng-controller="main")
+    include /jade/init.jade
+    #root.rank(ng-controller="rank")
+      #menu-backtop(ng-click="backhome()") #[i.fa.fa-angle-left]
+      include /jade/timer.jade
+      #ranklist
+        .x-card.rank(ng-repeat="photo in stream|orderBy:'-'",
+        ng-attr-data-order="{{photo.order}}"): .ib
+          div: img(ng-attr-src="{{photo.url}}",ng-click="full.set(photo)")
+          .ctrl
+            .num {{$index|rank}}
+            .pull-right
+              .icon #[i.fa.fa-heart]
+              .num {{photo.like || {}|count}}
+      include /jade/slideshow.jade

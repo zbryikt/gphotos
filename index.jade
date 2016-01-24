@@ -26,7 +26,7 @@ html(lang="en")
     script(type="text/javascript",src="index.js")
     script(type="text/javascript",src="/assets/bootstrap-material/0.5.7/js/material.min.js")
   body(ng-app="main",ng-controller="main")
-    #init(style="background:url(/img/loading.gif) center center no-repeat #fff;width:100%;height:100%;position:fixed;top:0;left:0;z-index:999",ng-class="{'dim':backend.inited && inited}")
+    include /jade/init.jade
     #root
       #menu-voteinfo(ng-show="backend.inited") 已投 {{backend.info.like || {}|count}} 票
       #menu-backtop(ng-click="backtop()") #[i.fa.fa-angle-up]
@@ -34,7 +34,7 @@ html(lang="en")
         span(ng-if="!tick.end && tick.start") 距離投票結束還有 {{tick.hrs}} 小時 {{tick.min}} 分 {{tick.sec}} 秒
         span(ng-if="tick.end && tick.start") 投票已結束
         span(ng-if="!tick.start") 投票尚未開始
-      .g-signin2(data-onsuccess="onSignIn")
+      //-.g-signin2(data-onsuccess="onSignIn")
       #layout
         .x-card(ng-repeat="photo in backend.stream|orderBy:'-'",
         ng-attr-data-order="{{photo.order}}"): .ib
@@ -44,14 +44,7 @@ html(lang="en")
             ng-click="like(photo,$event)") +1
             .num {{photo.like || {}|count}}
       hr
-      #slideshow(ng-attr-style="background-image:url({{full.photo.url|escape}})",
-      ng-class="{'active':full.show}",ng-click="full.show=false")
-        .closebtn &times;
-        .ctrl
-          .plus(ng-show="!tick.end && tick.start",
-          ng-class="{'active':full.photo.like[backend.user.uid].value}",
-          ng-click="like(full.photo,$event);") +1
-          .num {{full.photo.like || {}|count}}
+      include /jade/slideshow.jade
       #revote(ng-show="revote"): .ib
         .content
           .title 已達投票上限，下圖為目前的選擇，如想更換請點刪除
