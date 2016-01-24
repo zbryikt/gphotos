@@ -46,11 +46,12 @@ html(lang="en")
       hr
       #slideshow(ng-attr-style="background-image:url({{full.photo.url|escape}})",
       ng-class="{'active':full.show}",ng-click="full.show=false")
-        .count.btn.btn-fab.btn-default(ng-show="!tick.end && tick.start",
-        ng-class="{'active':full.photo.like[backend.user.uid].value}",ng-click="like(full.photo,$event);") 
-          span {{full.photo.like || {}|count}}
-          i.fa.fa-heart
-          i.fa.fa-check
+        .closebtn &times;
+        .ctrl
+          .plus(ng-show="!tick.end && tick.start",
+          ng-class="{'active':full.photo.like[backend.user.uid].value}",
+          ng-click="like(full.photo,$event);") +1
+          .num {{full.photo.like || {}|count}}
       #revote(ng-show="revote"): .ib
         .content
           .title 已達投票上限，下圖為目前的選擇，如想更換請點刪除

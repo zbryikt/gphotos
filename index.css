@@ -279,14 +279,17 @@ body {
   color: #666;
 }
 .x-card .ctrl .plus,
-.x-card .ctrl .num {
+#slideshow .plus,
+.x-card .ctrl .num,
+#slideshow .num {
   height: 40px;
   margin: 8px;
   display: inline-block;
   line-height: 40px;
   font-size: 16px;
 }
-.x-card .ctrl .plus {
+.x-card .ctrl .plus,
+#slideshow .plus {
   width: 40px;
   text-align: center;
   border-radius: 50%;
@@ -305,20 +308,24 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
-.x-card .ctrl .plus:hover {
+.x-card .ctrl .plus:hover,
+#slideshow .plus:hover {
   background: #ce352c;
   color: #fff;
 }
-.x-card .ctrl .plus.active {
+.x-card .ctrl .plus.active,
+#slideshow .plus.active {
   background: #dd4b39;
   color: #fff;
 }
-.x-card .ctrl .plus.disabled {
+.x-card .ctrl .plus.disabled,
+#slideshow .plus.disabled {
   background: rgba(0,0,0,0.12);
   color: rgba(0,0,0,0.26);
   cursor: default;
 }
-.x-card .ctrl .plus.active.disabled {
+.x-card .ctrl .plus.active.disabled,
+#slideshow .plus.active.disabled {
   background: rgba(0,0,0,0.12);
   color: rgba(0,0,0,0.26);
 }
@@ -338,10 +345,29 @@ body {
 #slideshow.active {
   display: block;
 }
-#slideshow .count.btn-fab.btn {
-  margin-left: -45px;
-  left: 50%;
+#slideshow .ctrl {
+  position: absolute;
+  right: 20px;
   bottom: 20px;
+  box-shadow: 0 4px 4px rgba(0,0,0,0.5);
+  background: #fff;
+  padding: 0 8px;
+  border-radius: 2px;
+}
+#slideshow .closebtn {
+  position: absolute;
+  top: 16px;
+  line-height: 51px;
+  font-size: 32px;
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  right: 16px;
+  box-shadow: 0 4px 4px rgba(0,0,0,0.1);
+  text-align: center;
+  cursor: pointer;
+  background: #fff;
 }
 #revote {
   position: fixed;

@@ -15,10 +15,28 @@
   display: none
   &.active
     display: block
-  .count.btn-fab.btn
-    margin-left: -45px
-    left: 50%
-    bottom: 20px
+#slideshow .ctrl
+  position: absolute
+  right: 20px
+  bottom: 20px
+  box-shadow: 0 4px 4px rgba(0,0,0,0.5)
+  background: #fff
+  padding: 0 8px
+  border-radius: 2px
+#slideshow .closebtn
+  position: absolute
+  top: 16px
+  line-height: 51px
+  font-size: 32px 
+  z-index: index(order, 'menu')
+  width: 56px
+  height: 56px
+  border-radius: 50%
+  right: 16px
+  box-shadow: 0 4px 4px rgba(0,0,0,0.1)
+  text-align: center
+  cursor: pointer
+  background: #fff
 
 #revote
   position: fixed
