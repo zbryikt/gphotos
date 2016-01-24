@@ -118,6 +118,29 @@ angular.module \main
         @output = document.createElement \canvas
         @inctx = @input.getContext \2d
         @outctx = @input.getContext \2d
+      # cubic resize until close to target size
+      resize: (image, width, height) -> new Promise (res, rej) ~>
+        if width => height := ( width / image.width ) * image.height
+        else if height => width := ( height / image.height ) * image.width
+        else [width, height] := [image.width, image.height]
+        [cw,ch,tw,th] = [image.width, image.height, width, height]
+        shrink = (cimg, cw,ch) ~>
+          final = if cw / 2 <= tw or ch / 2 <= th => true else false
+          iw = if final => tw else cw / 2
+          ih = if final => th else ch / 2
+          @input <<< {width: iw, height: ih}
+          @inctx.drawImage cimg, 0, 0, iw, ih
+          if !final => 
+            ret = @input.toDataURL \image/jpeg, 1.0
+            nimg = new Image!
+            nimg.onload = ~> shrink nimg, iw, ih
+            nimg.src = ret
+          else => 
+            ret = @input.toDataURL \image/jpeg, 0.85
+            res ret
+        shrink image, cw, ch
+      # implementation from limby-resize
+      /*
       resize: (image, width, height) -> new Promise (res, rej) ~>
         if width => height := ( width / image.width ) * image.height
         else if height => width := ( height / image.height ) * image.width
@@ -127,6 +150,7 @@ angular.module \main
         @output <<< {width, height}
         <~ canvas-resize @input, @output, _
         res @output.toDataURL \image/jpeg, 0.85
+      */
       frombin: (binary, type) -> new Promise (res, rej) ->
         img = new Image!
         img.onload = -> res img
