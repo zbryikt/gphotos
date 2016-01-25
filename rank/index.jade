@@ -28,6 +28,7 @@ html(lang="en")
   body(ng-app="main",ng-controller="main")
     include /jade/init.jade
     #root.rank(ng-controller="rank")
+      h1 Top 5 女神/男神
       #menu-backtop(ng-click="backhome()") #[i.fa.fa-angle-left]
       include /jade/timer.jade
       #ranklist(ng-show="!tick.end && tick.start")

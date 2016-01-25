@@ -467,8 +467,11 @@ body {
 #root.rank {
   text-align: center;
 }
+#root.rank h1 {
+  margin-top: 24px;
+}
 #ranklist {
-  margin-top: 10%;
+  margin-top: 5%;
 }
 .x-card.rank {
   width: 19%;
