@@ -19,7 +19,8 @@ angular.module \main, <[firebase]>
   ..filter \likecheck, -> (hash) -> 
     [k for k of hash].filter(->hash[it].value)
   ..filter \decode, -> -> atob(it)
-  ..filter \count, -> (hash)-> [k for k of hash].filter(->hash{}[it].value).length
+  ..filter \count, -> (hash)-> 
+    [k for k of hash].filter(->hash{}[it].value).length
   ..filter \escape, -> -> 
     if !it => return it
     idx = it.lastIndexOf(\/) + 1
@@ -94,18 +95,40 @@ angular.module \main, <[firebase]>
       if !backend.user or !entry.$id => return 
       if $scope.tick.end or !$scope.tick.start => return
       userinfo = $scope.backend.info #$scope.backend.{}info{}[backend.user.uid]
+      [k for k of userinfo.{}like].filter(->backend.stream[k])
+      keys = [k for k of userinfo.{}like]
+      console.log JSON.stringify keys
+
+      touched = false
+      for k,v of userinfo.{}like =>
+        if !backend.stream.$getRecord(k) => 
+          touched = true
+          v.value = false
+          console.log "revoke #k"
+      for k in keys => if !userinfo.{}like[k].value => 
+        touched = true
+        delete userinfo.{}like[k]
       userlikes = [k for k of userinfo.{}like].filter(->userinfo.{}like[it].value).length
       targetlike = entry.{}like{}[backend.user.uid].value
+      if touched => userinfo.$save!
+
+      console.log JSON.stringify [k for k of userinfo.{}like]
       if userlikes < 3 or targetlike or force-dislike => 
-        entrylike = $firebaseObject(
-          new Firebase("https://gphotos.firebaseio.com/stream/#{entry.$id}/like/#{backend.user.uid}")
-        )
-        <- entrylike.$loaded!then 
-        entrylike.value = !!!(entry.{}like{}[backend.user.uid].value)
-        if force-dislike => entrylike.value = false
-        entrylike.$save!
-        userinfo.{}like[btoa(entry.url)] = {value: entrylike.value}
-        userinfo.$save!
+        try
+          entrylike = $firebaseObject(
+            new Firebase("https://gphotos.firebaseio.com/stream/#{entry.$id}/like/#{backend.user.uid}")
+          )
+          <- entrylike.$loaded!then 
+          entrylike.value = !!!(entry.{}like{}[backend.user.uid].value)
+          if force-dislike => entrylike.value = false
+          entrylike.$save!
+          userinfo.{}like[entry.$id] = {value: entrylike.value}
+          userinfo.$save!
+          console.log "key: ", entry.$id
+          console.log JSON.stringify(userinfo.{}like)
+        catch e
+          console.log "['PLUS' EXCEPTION] catched for possibly entry removal"
+          console.log "#{e.stack}"
       else $scope.revote = true 
       if e => 
         e.prevent-default!
@@ -154,8 +177,8 @@ angular.module \main, <[firebase]>
         @min = parseInt(diff / 60) % 60
         @hrs = parseInt((diff - (diff % 3600))/3600)
         @end = (diff <= 0)
-    $scope.remove = (url) ->
-      photo = $scope.backend.stream.filter(->it.url == atob(url)).0
+    $scope.remove = (k) ->
+      phogo = $scope.backend.$getRecord(k)
       if !photo => return
       $scope.like(photo, null, true)
     $interval (-> $scope.tick.count!), 1000
