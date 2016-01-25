@@ -50,10 +50,24 @@ angular.module \main, <[firebase]>
           @user = ret
           @getinfo!
         else @getinfo!
+      updateinfo: ->
+        if !@info => return
+        keys = [k for k of @info.{}like]
+        touched = false
+        for k,v of @info.{}like =>
+          if !@stream.$getRecord(k) => 
+            touched = true
+            v.value = false
+        for k in keys => if !@info.{}like[k].value => 
+          touched = true
+          delete @info.{}like[k]
+        if touched => @info.$save!
       getinfo: ->
         @ref.user = new Firebase("https://gphotos.firebaseio.com/user/#{@user.uid}/")
         @info = $firebaseObject @ref.user
-        @info.$loaded!then ~> @inited = true
+        <~ @info.$loaded!then
+        @updateinfo!
+        @inited = true
       email: (email, password) ->
         @auth.$authWithPassword({email, password})
 
@@ -94,21 +108,10 @@ angular.module \main, <[firebase]>
     $scope.like = (entry, e, force-dislike = false) -> 
       if !backend.user or !entry.$id => return 
       if $scope.tick.end or !$scope.tick.start => return
+      $scope.backend.updateinfo!
       userinfo = $scope.backend.info #$scope.backend.{}info{}[backend.user.uid]
-      [k for k of userinfo.{}like].filter(->backend.stream[k])
-      keys = [k for k of userinfo.{}like]
-
-      touched = false
-      for k,v of userinfo.{}like =>
-        if !backend.stream.$getRecord(k) => 
-          touched = true
-          v.value = false
-      for k in keys => if !userinfo.{}like[k].value => 
-        touched = true
-        delete userinfo.{}like[k]
       userlikes = [k for k of userinfo.{}like].filter(->userinfo.{}like[it].value).length
       targetlike = entry.{}like{}[backend.user.uid].value
-      if touched => userinfo.$save!
 
       if userlikes < 3 or targetlike or force-dislike => 
         try
@@ -121,7 +124,6 @@ angular.module \main, <[firebase]>
           entrylike.$save!
           userinfo.{}like[entry.$id] = {value: entrylike.value, url: entry.url}
           userinfo.$save!
-          console.log JSON.stringify(userinfo.{}like)
         catch e
           console.log "['PLUS' EXCEPTION] catched for possibly entry removal"
           console.log "#{e.stack}"
@@ -152,6 +154,7 @@ angular.module \main, <[firebase]>
       if $scope.last-length != $scope.backend.stream.length =>
         $scope.isotope.update!
         $scope.last-length = $scope.backend.stream.length
+      $scope.backend.updateinfo!
     ), true
 
     $scope.isotope.init!
@@ -182,4 +185,3 @@ angular.module \main, <[firebase]>
 
 window.onSignIn = (user) ->
   profile = user.getBasicProfile!
-  console.log profile
