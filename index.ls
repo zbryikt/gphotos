@@ -66,7 +66,7 @@ angular.module \main, <[firebase]>
     update = (->
       stream = backend.stream.map(
         (p)-> {like: p.like, url: p.url, count: [k for k of p.like].filter(->p.like[it].value).length}
-      )
+      ).filter(->it.url)
       stream.sort((a,b)-> b.count - a.count)
       $scope.stream = stream.splice 0,5
       $scope.inited = true
@@ -91,7 +91,7 @@ angular.module \main, <[firebase]>
       show: false
 
     $scope.like = (entry, e, force-dislike = false) -> 
-      if !backend.user => return 
+      if !backend.user or !entry.$id => return 
       if $scope.tick.end or !$scope.tick.start => return
       userinfo = $scope.backend.info #$scope.backend.{}info{}[backend.user.uid]
       userlikes = [k for k of userinfo.{}like].filter(->userinfo.{}like[it].value).length
