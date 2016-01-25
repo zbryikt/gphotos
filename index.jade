@@ -51,9 +51,11 @@ html(lang="en")
         .content
           .title 已達投票上限，下圖為目前的選擇，如想更換請點刪除
           .photo-ctrl
-            .photo(ng-repeat="(k,v) in backend.info.like|likecheck",
-            ng-attr-style="background-image:url({{v.url}})")
-              .x-btn(ng-click="remove(k)"): i.fa.fa-trash
+            .photo(ng-repeat="k in backend.info.like|likecheck",
+            ng-attr-style="background-image:url({{backend.info.like[k].url}})")
+              .x-btn(ng-click="remove(k)")
+                span {{v}}
+                i.fa.fa-trash
               //-img(ng-attr-src="{{k|decode}}")
               //-.btn.btn-default(ng-click="remove(k)") 刪除
 

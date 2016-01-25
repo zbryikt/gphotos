@@ -97,14 +97,12 @@ angular.module \main, <[firebase]>
       userinfo = $scope.backend.info #$scope.backend.{}info{}[backend.user.uid]
       [k for k of userinfo.{}like].filter(->backend.stream[k])
       keys = [k for k of userinfo.{}like]
-      console.log JSON.stringify keys
 
       touched = false
       for k,v of userinfo.{}like =>
         if !backend.stream.$getRecord(k) => 
           touched = true
           v.value = false
-          console.log "revoke #k"
       for k in keys => if !userinfo.{}like[k].value => 
         touched = true
         delete userinfo.{}like[k]
@@ -112,7 +110,6 @@ angular.module \main, <[firebase]>
       targetlike = entry.{}like{}[backend.user.uid].value
       if touched => userinfo.$save!
 
-      console.log JSON.stringify [k for k of userinfo.{}like]
       if userlikes < 3 or targetlike or force-dislike => 
         try
           entrylike = $firebaseObject(
@@ -122,9 +119,8 @@ angular.module \main, <[firebase]>
           entrylike.value = !!!(entry.{}like{}[backend.user.uid].value)
           if force-dislike => entrylike.value = false
           entrylike.$save!
-          userinfo.{}like[entry.$id] = {value: entrylike.value}
+          userinfo.{}like[entry.$id] = {value: entrylike.value, url: entry.url}
           userinfo.$save!
-          console.log "key: ", entry.$id
           console.log JSON.stringify(userinfo.{}like)
         catch e
           console.log "['PLUS' EXCEPTION] catched for possibly entry removal"
@@ -178,7 +174,7 @@ angular.module \main, <[firebase]>
         @hrs = parseInt((diff - (diff % 3600))/3600)
         @end = (diff <= 0)
     $scope.remove = (k) ->
-      phogo = $scope.backend.$getRecord(k)
+      photo = $scope.backend.stream.$getRecord(k)
       if !photo => return
       $scope.like(photo, null, true)
     $interval (-> $scope.tick.count!), 1000
