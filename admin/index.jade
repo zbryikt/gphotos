@@ -25,8 +25,10 @@ html(lang="en")
     script(type="text/javascript",src="/admin/storage.js")
     script(type="text/javascript",src="/index.js")
     script(type="text/javascript",src="/admin/index.js")
-  body
-    #root(ng-app="main",ng-controller="admin",style="margin:20px")
+  body(ng-app="main",ng-controller="admin")
+    #init(style="background:url(/img/loading.gif) center center no-repeat #fff;width:100%;height:100%;position:fixed;top:0;left:0;z-index:999",ng-class="{'dim':backend.inited && inited}")
+      #hint 記得允許彈出式視窗 #[i.fa.fa-arrow-up]
+    #root.admin(style="margin:20px")
       br
       h2.text-center 照片上傳後台
       hr
@@ -57,3 +59,27 @@ html(lang="en")
         .progress(ng-class="{'dim':item.progress>=item.size}")
           .progress-bar(ng-attr-style="width:{{(100 * (item.progress / item.size)) || 0}}%")
         i.glyphicon.glyphicon-ok(ng-class="{'active':item.progress >= item.size}")
+      br
+      hr
+      h2.text-center 照片前五名
+      .rank(ng-controller="rank")
+        #menu-backtop(ng-click="backhome()") #[i.fa.fa-angle-left]
+        #ranklist
+          .x-card.rank(ng-repeat="photo in stream|orderBy:'-'",
+          ng-attr-data-order="{{photo.order}}"): .ib
+            div: img(ng-attr-src="{{photo.url}}",ng-click="full.set(photo)")
+            .ctrl
+              .num {{$index|rank}}
+              .pull-right
+                .icon #[i.fa.fa-heart]
+                .num {{photo.like || {}|count}}
+
+      br
+      hr
+      h2.text-center 刪除照片區
+      #layout(ng-controller="main")
+        .x-card(ng-repeat="photo in backend.stream|orderBy:'-'",
+        ng-attr-data-order="{{photo.order}}"): .ib
+          div: img(ng-attr-src="{{photo.url}}",ng-click="full.set(photo)",isotope)
+          .ctrl
+            .plus.pull-right(ng-click="trash(photo)"): i.fa.fa-trash

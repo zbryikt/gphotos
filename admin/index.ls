@@ -13,6 +13,7 @@ angular.module \main
   <[$scope $interval $timeout $firebaseArray $firebaseAuth backend]> ++ 
   ($scope, $interval, $timeout, $firebaseArray, $firebaseAuth, backend) ->
     $scope <<< backend{stream, user}
+    $scope.backend = backend
     (authdata) <- backend.email \admin@tw-events.com, \admin .then
     $scope.admin = authdata
     $scope.vote = do
@@ -156,4 +157,6 @@ angular.module \main
         img.onload = -> res img
         img.src = "data:#{type};base64,#{btoa(binary)}"
     $scope.image.init!
-    storage.init!
+    storage.init!then -> $scope.inited = true
+    $scope.trash = (photo) ->
+      backend.stream.$remove photo

@@ -37,7 +37,7 @@ storage = do
     @token = ret
     console.log ">>>", ret
     gapi.client.load \storage, @config.version
-    <~ setTimeout _, 1000
+    <~ setTimeout _, 500
     res @token
 
   init: -> new Promise (res, rej) ~> @_init res, rej
