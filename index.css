@@ -153,12 +153,19 @@ body {
   opacity: 1;
 }
 #menu-voteinfo,
-#menu-backtop {
+#menu-backtop,
+#menu-gorank {
   position: fixed;
   top: 16px;
   line-height: 56px;
   font-size: 32px;
   z-index: 2;
+}
+#menu-gorank {
+  top: 80px;
+  color: #404040;
+  font-size: 16px;
+  text-decoration: none;
 }
 #menu-voteinfo {
   border-radius: 2px;
@@ -172,7 +179,8 @@ body {
   background: rgba(0,0,0,0.87);
   color: #eee;
 }
-#menu-backtop {
+#menu-backtop,
+#menu-gorank {
   width: 56px;
   height: 56px;
   border-radius: 50%;

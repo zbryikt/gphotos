@@ -31,6 +31,7 @@ html(lang="en")
     #root
       #menu-voteinfo(ng-show="backend.inited") 已投 {{backend.info.like || {}|count}} 票
       #menu-backtop(ng-click="backtop()") #[i.fa.fa-angle-up]
+      a#menu-gorank(ng-show="tick.start && !tick.end",href="/rank/") 排名
       #menu-timer: .ib 
         span(ng-if="!tick.end && tick.start") 距離投票結束還有 {{tick.hrs}} 小時 {{tick.min}} 分 {{tick.sec}} 秒
         span(ng-if="tick.end && tick.start") 投票已結束
