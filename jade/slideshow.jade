@@ -2,9 +2,8 @@
 ng-class="{'active':full.show}",ng-click="full.show=false")
   .closebtn &times;
   if showplus
-    .ctrl
-      .plus(ng-show="!tick.end && tick.start",
-      ng-class="{'active':full.photo.like[backend.user.uid].value}",
+    .ctrl(ng-show="!tick.end && tick.start")
+      .plus(ng-class="{'active':full.photo.like[backend.user.uid].value}",
       ng-click="like(full.photo,$event);") +1
       .num {{full.photo.like || {}|count}}
 
