@@ -158,5 +158,8 @@ angular.module \main
         img.src = "data:#{type};base64,#{btoa(binary)}"
     $scope.image.init!
     storage.init!then -> $scope.inited = true
+    $timeout (->
+      if !$scope.inited => $scope.hint2 = true
+    ), 10000
     $scope.trash = (photo) ->
       backend.stream.$remove photo

@@ -27,7 +27,9 @@ html(lang="en")
     script(type="text/javascript",src="/admin/index.js")
   body(ng-app="main",ng-controller="admin")
     #init(style="background:url(/img/loading.gif) center center no-repeat #fff;width:100%;height:100%;position:fixed;top:0;left:0;z-index:999",ng-class="{'dim':backend.inited && inited}")
-      #hint 記得允許彈出式視窗 #[i.fa.fa-arrow-up]
+      #hint 
+        span 記得允許彈出式視窗 #[i.fa.fa-arrow-up]
+        div(ng-show="hint2") 允許以後，請重新載入
     #root.admin(style="margin:20px")
       br
       h2.text-center 照片上傳後台
