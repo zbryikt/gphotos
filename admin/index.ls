@@ -27,6 +27,8 @@ angular.module \main
         backend.config.dur = @dur
         backend.config.$save!
     $scope.backend = backend
+    $scope.$watch 'backend.config.start', -> $scope.vote.start = backend.config.start
+    $scope.$watch 'backend.config.dur', -> $scope.vote.dur = backend.config.dur
     $scope.$watch 'backend.config', ->
       $scope.vote.start = backend.config.start or null
       $scope.vote.dur = backend.config.dur or 120
