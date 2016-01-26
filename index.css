@@ -335,10 +335,14 @@ body {
   position: absolute;
   right: 20px;
   bottom: 20px;
-  box-shadow: 0 4px 4px rgba(0,0,0,0.5);
-  background: #fff;
   padding: 0 8px;
   border-radius: 2px;
+}
+#slideshow .ctrl .plus {
+  box-shadow: 0 4px 4px rgba(0,0,0,0.5);
+  width: 56px;
+  height: 56px;
+  line-height: 56px;
 }
 #slideshow .closebtn {
   position: absolute;
