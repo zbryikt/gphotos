@@ -19,10 +19,9 @@ angular.module \main
     $scope.vote = do
       start: backend.config.start or null
       getstart: -> 
-        if !@start => 
-          @start = new Date!getTime!
-          backend.config.start = @start
-          backend.config.$save!
+        @start = new Date!getTime!
+        backend.config.start = @start
+        backend.config.$save!
       dur: backend.config.dur or 120
       update: ->
         backend.config.dur = @dur
